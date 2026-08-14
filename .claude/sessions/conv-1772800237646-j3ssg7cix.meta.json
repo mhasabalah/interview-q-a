@@ -1,0 +1,20 @@
+{
+  "id": "conv-1772800237646-j3ssg7cix",
+  "title": "Create HR project todo for asset type page",
+  "titleGenerationStatus": "success",
+  "createdAt": 1772800237646,
+  "updatedAt": 1776945399378,
+  "lastResponseAt": 1776945399378,
+  "sessionId": "de9f332d-3d61-4aaf-b1fc-330aa3bdad9b",
+  "sdkSessionId": "de9f332d-3d61-4aaf-b1fc-330aa3bdad9b",
+  "currentNote": "Daily Task/Hr/Untitled.md",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 808,
+    "cacheReadInputTokens": 65300,
+    "contextWindow": 200000,
+    "contextTokens": 66109,
+    "percentage": 33
+  }
+}

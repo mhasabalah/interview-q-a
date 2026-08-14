@@ -1,0 +1,20 @@
+{
+  "id": "conv-1771278740218-bl1wfjtdy",
+  "title": "Check Obsidian Standards Compliance",
+  "titleGenerationStatus": "success",
+  "createdAt": 1771278740218,
+  "updatedAt": 1772800201245,
+  "lastResponseAt": 1771278775044,
+  "sessionId": "ffe43e82-4db9-49e9-85bc-5c12104805d6",
+  "sdkSessionId": "ffe43e82-4db9-49e9-85bc-5c12104805d6",
+  "currentNote": "Untitled/Project Dashboard.md",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 6,
+    "cacheCreationInputTokens": 814,
+    "cacheReadInputTokens": 22717,
+    "contextWindow": 200000,
+    "contextTokens": 23537,
+    "percentage": 12
+  }
+}

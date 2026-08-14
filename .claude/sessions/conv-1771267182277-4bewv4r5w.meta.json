@@ -1,0 +1,19 @@
+{
+  "id": "conv-1771267182277-4bewv4r5w",
+  "title": "Showcase Claude Agent Capabilities",
+  "titleGenerationStatus": "success",
+  "createdAt": 1771267182284,
+  "updatedAt": 1771278719918,
+  "lastResponseAt": 1771267263106,
+  "sessionId": "2cf41225-0448-48cb-a054-d3df8d563dbb",
+  "sdkSessionId": "2cf41225-0448-48cb-a054-d3df8d563dbb",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 6,
+    "cacheCreationInputTokens": 961,
+    "cacheReadInputTokens": 38924,
+    "contextWindow": 200000,
+    "contextTokens": 39891,
+    "percentage": 20
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "main": {
+    "id": "6e1796797fb7883a",
+    "type": "split",
+    "children": [
+      {
+        "id": "e90ff4dce6b5bfe9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "646a4425d820fb50",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "q&a/06-Database.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "06-Database"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "289307c5e4d43d9a",
+    "type": "split",
+    "children": [
+      {
+        "id": "e821c0b119bf5102",
+        "type": "tabs",
+        "dimension": 75.5201958384333,
+        "children": [
+          {
+            "id": "ee2aade33e4b234f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "67ccf24e3763014a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "circ",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "ac40c3ca7f31532b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "5d0a61239d3daf90",
+            "type": "leaf",
+            "state": {
+              "type": "mk-path-view",
+              "state": {},
+              "icon": "layout-grid",
+              "title": "Navigator"
+            }
+          }
+        ],
+        "currentTab": 3
+      },
+      {
+        "id": "483a397a0d508d9e",
+        "type": "tabs",
+        "dimension": 24.479804161566708,
+        "children": [
+          {
+            "id": "0cdc8e58e081480a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "q&a/00-Index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "00-Index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 274.5026054382324
+  },
+  "right": {
+    "id": "584b9811f776716f",
+    "type": "split",
+    "children": [
+      {
+        "id": "de594f46db5600ac",
+        "type": "tabs",
+        "dimension": 58.139534883720934,
+        "children": [
+          {
+            "id": "bfe4aebe96a3185a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "harmonic-emergence.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for harmonic-emergence"
+            }
+          },
+          {
+            "id": "21ea0b8e44039ca4",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "7b4663a5e5b1bc58",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "f7366217194aa8e7",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f7998f0f252cd31a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "q&a/00-Index.md",
+                "followCursor": true,
+                "showSearch": true,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "d2b9ccb7c0a36851",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          },
+          {
+            "id": "8e05df0ad8698103",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 5
+      },
+      {
+        "id": "b93f9e41b07f7e6b",
+        "type": "tabs",
+        "dimension": 41.86046511627907,
+        "children": [
+          {
+            "id": "dfef7f8b176c5a42",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 315.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-git:Open Git source control": false,
+      "markdown-importer:Open format converter": false,
+      "switcher:Open quick switcher": false,
+      "canvas:Create new canvas": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "daily-notes:Open today's daily note": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "templater-obsidian:Templater": false,
+      "claudian:Open Claudian": false,
+      "graph:Open graph view": false
+    }
+  },
+  "active": "646a4425d820fb50",
+  "lastOpenFiles": [
+    "q&a/04-CSharp-Fundamentals.md",
+    "q&a/01-OOP-Principles.md",
+    "q&a/00-Index.md",
+    "q&a/10-Middlewares.md",
+    "q&a/14-CI-CD.md",
+    "q&a/03-Design-Patterns.md",
+    "q&a/06-Database.md",
+    "q&a/08-Clean-Architecture.md",
+    "q&a/07-Domain-Driven-Design.md",
+    "q&a/05-Data-Structures-Algorithms.md",
+    "q&a/02-SOLID-Principles.md",
+    "q&a/12-RabbitMQ-MassTransit.md",
+    "q&a/13-Real-Time-Communication.md",
+    "q&a/16-System-Design.md",
+    "q&a/15-Azure-Cloud.md",
+    "q&a/11-Module-Communication.md",
+    "q&a/09-Onion-Architecture.md",
+    "Tags",
+    "q&a/06-Database.md.tmp.12484.4ba16e5397e7",
+    "Tags.md",
+    "Untitled.canvas",
+    "Tags/#interview/#interview.md",
+    "q&a/06-Database.md.tmp.12484.60a13c9c4cb5",
+    "Tags/#interview",
+    "q&a/00-Index.md.tmp.12484.39c8f9de78ed",
+    "q&a/Domain-Driven-Design.md",
+    "q&a/System-Design.md.tmp.12484.844b4629bceb",
+    "q&a/Azure-Cloud.md.tmp.12484.50eeac1740ac",
+    "q&a/CI-CD.md.tmp.12484.6f339ae995a3",
+    "q&a/RabbitMQ-MassTransit.md.tmp.12484.01967c3c05f6",
+    "q&a/Module-Communication.md.tmp.12484.06fd083010e6",
+    "q&a/Middlewares.md",
+    "q&a/Module-Communication.md",
+    "q&a/Design-Patterns.md",
+    "q&a/Data-Structures-Algorithms.md",
+    "q&a/Clean-Architecture.md",
+    "Untitled 1.canvas"
+  ]
+}

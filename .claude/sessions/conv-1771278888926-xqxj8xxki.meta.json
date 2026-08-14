@@ -1,0 +1,19 @@
+{
+  "id": "conv-1771278888926-xqxj8xxki",
+  "title": "Check plugin requirements for setup",
+  "titleGenerationStatus": "success",
+  "createdAt": 1771278888926,
+  "updatedAt": 1772800199547,
+  "lastResponseAt": 1771278900978,
+  "sessionId": "ee18bf5d-f5bf-47b7-bbcb-e65739411133",
+  "sdkSessionId": "ee18bf5d-f5bf-47b7-bbcb-e65739411133",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 6,
+    "cacheCreationInputTokens": 1203,
+    "cacheReadInputTokens": 20013,
+    "contextWindow": 200000,
+    "contextTokens": 21222,
+    "percentage": 11
+  }
+}

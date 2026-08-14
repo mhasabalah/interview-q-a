@@ -1,0 +1,18 @@
+# Obsidian
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace.json.bak
+.obsidian/cache/
+.obsidian/plugins/*/data.json
+
+# Obsidian trash (deleted notes)
+.trash/
+
+# Make.md plugin local state
+.space/
+.makemd/fileCache.mdc
+.makemd/superstate.mdc
+
+# OS files
+.DS_Store
+Thumbs.db

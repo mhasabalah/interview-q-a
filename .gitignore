@@ -10,8 +10,7 @@
 
 # Make.md plugin local state
 .space/
-.makemd/fileCache.mdc
-.makemd/superstate.mdc
+.makemd/
 
 # OS files
 .DS_Store

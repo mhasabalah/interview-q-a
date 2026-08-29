@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "e90ff4dce6b5bfe9",
+        "id": "93ec131a79cc66da",
         "type": "tabs",
         "children": [
           {
-            "id": "646a4425d820fb50",
+            "id": "834eaa17cad10c08",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "q&a/06-Database.md",
-                "mode": "source",
+                "file": "q&a/07-Domain-Driven-Design.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "06-Database"
+              "title": "07-Domain-Driven-Design"
             }
           }
         ]
@@ -33,7 +33,7 @@
       {
         "id": "e821c0b119bf5102",
         "type": "tabs",
-        "dimension": 75.5201958384333,
+        "dimension": 62.30110159118727,
         "children": [
           {
             "id": "ee2aade33e4b234f",
@@ -56,7 +56,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "circ",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -72,13 +72,16 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-bookmark",
               "title": "Bookmarks"
             }
           },
           {
-            "id": "5d0a61239d3daf90",
+            "id": "1c4266d8cd114ee4",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -93,7 +96,7 @@
       {
         "id": "483a397a0d508d9e",
         "type": "tabs",
-        "dimension": 24.479804161566708,
+        "dimension": 37.69889840881273,
         "children": [
           {
             "id": "0cdc8e58e081480a",
@@ -108,12 +111,23 @@
               "icon": "lucide-file",
               "title": "00-Index"
             }
+          },
+          {
+            "id": "646a4425d820fb50",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 274.5026054382324
+    "width": 283.3359184265137
   },
   "right": {
     "id": "584b9811f776716f",
@@ -191,9 +205,9 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "q&a/00-Index.md",
+                "file": "q&a/07-Domain-Driven-Design.md",
                 "followCursor": true,
-                "showSearch": true,
+                "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
@@ -208,16 +222,6 @@
               "state": {},
               "icon": "git-pull-request",
               "title": "Source Control"
-            }
-          },
-          {
-            "id": "8e05df0ad8698103",
-            "type": "leaf",
-            "state": {
-              "type": "claudian-view",
-              "state": {},
-              "icon": "bot",
-              "title": "Claudian"
             }
           }
         ],
@@ -242,7 +246,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 315.5
+    "width": 299.8333740234375
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -254,50 +258,48 @@
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
       "daily-notes:Open today's daily note": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
       "templater-obsidian:Templater": false,
-      "claudian:Open Claudian": false,
       "graph:Open graph view": false
     }
   },
-  "active": "646a4425d820fb50",
+  "active": "d2b9ccb7c0a36851",
   "lastOpenFiles": [
-    "q&a/04-CSharp-Fundamentals.md",
-    "q&a/01-OOP-Principles.md",
-    "q&a/00-Index.md",
-    "q&a/10-Middlewares.md",
-    "q&a/14-CI-CD.md",
-    "q&a/03-Design-Patterns.md",
     "q&a/06-Database.md",
-    "q&a/08-Clean-Architecture.md",
     "q&a/07-Domain-Driven-Design.md",
-    "q&a/05-Data-Structures-Algorithms.md",
-    "q&a/02-SOLID-Principles.md",
-    "q&a/12-RabbitMQ-MassTransit.md",
-    "q&a/13-Real-Time-Communication.md",
+    "q&a/08-Clean-Architecture.md",
+    "CV-Mohamed-Hasabalah-Senior-Software-Engineer.md",
+    "Mohamed-Hasabalah-CV-source.html",
     "q&a/16-System-Design.md",
+    "q&a/20-Choosing-An-Architecture.md",
+    "q&a/21-Database-Part-2.md",
+    "q&a/05-Data-Structures-Algorithms.md",
+    "q&a/01-OOP-Principles.md",
+    "Mohamed-Hasabalah-CV.pdf",
+    "q&a/03-Design-Patterns.md",
+    "q&a/02-SOLID-Principles.md",
+    "q&a/00-Index.md",
+    "cv-build/cv.bak",
+    "cv-build/README.md",
+    "cv-build/cv-print.html",
+    "cv-build/fonts/ss700.woff2",
+    "cv-build/fonts/ss600.woff2",
+    "cv-build/fonts/ss400.woff2",
+    "cv-build/fonts/serif600.woff2",
+    "cv-build/cv.html",
+    "cv-build/fonts",
+    "q&a/19-Modular-Monolith.md",
+    "q&a/18-Distributed-Systems-Reliability.md",
+    "q&a/17-Architecture-Defense.md",
+    "q&a/13-Real-Time-Communication.md",
+    "q&a/14-CI-CD.md",
     "q&a/15-Azure-Cloud.md",
+    "q&a/10-Middlewares.md",
     "q&a/11-Module-Communication.md",
-    "q&a/09-Onion-Architecture.md",
-    "Tags",
-    "q&a/06-Database.md.tmp.12484.4ba16e5397e7",
-    "Tags.md",
+    "q&a/12-RabbitMQ-MassTransit.md",
+    "q&a/04-CSharp-Fundamentals.md",
     "Untitled.canvas",
-    "Tags/#interview/#interview.md",
-    "q&a/06-Database.md.tmp.12484.60a13c9c4cb5",
-    "Tags/#interview",
-    "q&a/00-Index.md.tmp.12484.39c8f9de78ed",
-    "q&a/Domain-Driven-Design.md",
-    "q&a/System-Design.md.tmp.12484.844b4629bceb",
-    "q&a/Azure-Cloud.md.tmp.12484.50eeac1740ac",
-    "q&a/CI-CD.md.tmp.12484.6f339ae995a3",
-    "q&a/RabbitMQ-MassTransit.md.tmp.12484.01967c3c05f6",
-    "q&a/Module-Communication.md.tmp.12484.06fd083010e6",
-    "q&a/Middlewares.md",
-    "q&a/Module-Communication.md",
-    "q&a/Design-Patterns.md",
-    "q&a/Data-Structures-Algorithms.md",
-    "q&a/Clean-Architecture.md",
+    "q&a/09-Onion-Architecture.md",
+    "Tags.md",
     "Untitled 1.canvas"
   ]
 }

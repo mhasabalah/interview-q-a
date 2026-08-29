@@ -1,11 +1,8 @@
 [
-  "obsidian-icon-folder",
   "obsidian-git",
-  "obsidian-excalidraw-plugin",
-  "templater-obsidian",
   "calendar",
-  "obsidian-file-color",
   "file-explorer-note-count",
-  "claudian",
-  "make-md"
+  "make-md",
+  "obsidian-file-color",
+  "templater-obsidian"
 ]

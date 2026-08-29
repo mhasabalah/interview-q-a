@@ -8,7 +8,10 @@ order: 12
 # RabbitMQ & MassTransit Interview Questions & Answers
 
 > [!info]+ Related Notes
-> [[11-Module-Communication|Module Communication]] · [[16-System-Design|System Design]]
+> [[11-Module-Communication|Module Communication]] · [[16-System-Design|System Design]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]]
+
+> [!tip] Going deeper
+> Delivery guarantees, the retry ladder (immediate → delayed → DLQ), poison-vs-downstream-down, the outbox/inbox pair, and **Hangfire vs a real broker** are covered in [[18-Distributed-Systems-Reliability#1. Reliability Primitives|Distributed Systems & Reliability]].
 
 ## What is RabbitMQ?
 **Answer:** RabbitMQ is an open-source message broker implementing AMQP (Advanced Message Queuing Protocol) for asynchronous communication between distributed systems using queues, exchanges, and routing.

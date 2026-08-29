@@ -8,7 +8,12 @@ order: 11
 # Module Communication Interview Questions & Answers
 
 > [!info]+ Related Notes
-> [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[13-Real-Time-Communication|Real-Time Communication]] · [[09-Onion-Architecture|Onion Architecture]]
+> [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[13-Real-Time-Communication|Real-Time Communication]] · [[09-Onion-Architecture|Onion Architecture]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]]
+
+> [!tip] Going deeper
+> For communication **between modules inside one deployable** — facades, in-process integration events shaped like broker messages, and why that makes extraction a transport swap — see [[19-Modular-Monolith#Communication between modules|Modular Monolith]].
+>
+> This note covers **what** each pattern is. For the senior follow-ups — *why dual-write is broken*, *why exactly-once delivery is a lie*, *backoff + jitter*, *DLQ and poison messages*, *idempotency keys and the inbox* — see [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]]. For *domain events vs integration events* and dispatch ordering, see [[17-Architecture-Defense#Domain events vs integration events|Architecture Defense]].
 
 ## What is inter-module communication?
 **Answer:** Inter-module communication is the exchange of data and messages between different modules, services, or components in a distributed system using synchronous or asynchronous patterns.

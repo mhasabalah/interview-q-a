@@ -8,7 +8,10 @@ order: 6
 # Database Interview Questions & Answers
 
 > [!info]+ Related Notes
-> [[07-Domain-Driven-Design|Domain-Driven Design]] · [[16-System-Design|System Design]]
+> [[07-Domain-Driven-Design|Domain-Driven Design]] · [[16-System-Design|System Design]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]]
+
+> [!tip] Going deeper
+> **Replication lag and read-your-own-writes**, **connection pool exhaustion and PgBouncer**, and *when sharding is actually worth its pain* are covered in [[18-Distributed-Systems-Reliability#3. Scaling|Distributed Systems & Reliability]].
 
 ## Fundamental Concepts
 

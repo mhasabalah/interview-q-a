@@ -8,7 +8,10 @@ order: 16
 # System Design Interview Q&A
 
 > [!info]+ Related Notes
-> [[06-Database|Database]] · [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[15-Azure-Cloud|Azure Cloud]] · [[14-CI-CD|CI/CD]]
+> [[06-Database|Database]] · [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[15-Azure-Cloud|Azure Cloud]] · [[14-CI-CD|CI/CD]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]]
+
+> [!tip]+ Doing the design round
+> Jump to **[[#41. The design round — the framework that scores you|§41 the framework]]** and the worked example **[[#42. Design a booking system for 10k concurrent users|§42 booking system for 10k concurrent users]]**. Practise §42 **out loud, on a whiteboard, in 40 minutes** — the framework is worth more marks than the content.
 
 ## Fundamentals
 
@@ -1933,3 +1936,251 @@ Clients (WebSocket) → Load Balancer (Sticky Sessions)
 - Not considering trade-offs
 - Missing edge cases
 - Poor time management
+
+---
+
+## The Design Round
+
+### 41. The design round — the framework that scores you
+
+> [!danger] The single most important thing
+> **The framework matters more than the content.** Two candidates can produce the same architecture; the one who *drove the conversation in a visible order* passes. And **talk continuously** — silence reads as not knowing. Narrate even your uncertainty: *"I'm deciding between X and Y; the deciding factor is Z, so I'll take X."*
+
+**The seven steps, with time budget for a 45-minute round:**
+
+| # | Step | Time | What you must produce |
+|---|---|---|---|
+| 1 | **Clarify requirements** | 5 min | 3–5 functional features, explicitly **out of scope** items, and the non-functionals that matter |
+| 2 | **Estimate scale** | 5 min | rps (read vs write), storage, bandwidth — round numbers, out loud |
+| 3 | **Define the API contract** | 5 min | 4–6 endpoints with the fields that matter |
+| 4 | **Data model** | 5 min | tables/entities, keys, the indexes the access patterns demand |
+| 5 | **High-level components** | 10 min | the box diagram: client → CDN → LB → app → cache → DB → queue → workers → storage |
+| 6 | **Find the bottleneck and deep-dive** | 10 min | pick the *hard* part yourself and solve it properly |
+| 7 | **Trade-offs, failure modes, scale-out** | 5 min | what you'd do at 10× and what breaks first |
+
+**Step 1 — the questions to actually ask** (asking these *is* points):
+- Who uses it and for what? Read-heavy or write-heavy?
+- How many users — total vs **concurrent**? What's the peak-to-average ratio?
+- What must be **strongly consistent**, and what can be stale? (This one question shapes everything.)
+- Latency target? Global or single-region? Mobile clients?
+- What's **out of scope** — auth, payments, admin, analytics? *Say it out loud and get agreement.*
+
+**Step 2 — estimation cheatsheet** (nobody checks your arithmetic; they check that you *do* it):
+
+```text
+concurrent users -> rps:   rps ≈ concurrent / think_time_seconds
+                           10,000 concurrent, ~10s between actions -> ~1,000 rps average
+peak:                      3–5× average -> plan for ~3,000–5,000 rps
+read:write:                browse-style products are 100:1 or worse
+storage:                   rows × row_size × retention, then × 2–3 for indexes
+bandwidth:                 rps × response_size
+handy numbers:             1M rows × 1KB = 1GB · 1 day ≈ 86,400s ≈ 100k s
+                           memory read ~100ns · SSD ~100µs · DB query 1–10ms
+                           network same-DC <1ms · cross-region 50–150ms
+one commodity Postgres:    ~5k–10k simple reads/s, ~1k–5k writes/s (then: cache, replicas, shard)
+one app pod:               ~500–2,000 rps for I/O-bound .NET work
+```
+
+**Step 6 — the move that gets you hired:** *pick the bottleneck yourself before they ask.* "The interesting problem here isn't the CRUD — it's that N users compete for the same seat. Let me solve that." That sentence converts a generic design into a senior one.
+
+**Step 7 — trade-off vocabulary** to use explicitly: strong vs eventual consistency · latency vs throughput · normalise vs denormalise · sync vs async · cache freshness vs DB load · consistency vs availability under partition · cost vs complexity. Every choice, say **"I'm choosing X, which costs me Y, and I accept it because Z."**
+
+**Anti-patterns that lose marks:** designing before clarifying · reciting Kafka/Kubernetes/microservices with no reason ("we have 30 writes/s — one Postgres and a cache is the right answer, and I'd say so") · going silent while thinking · ignoring failure modes · no numbers · refusing to commit to a decision.
+
+---
+
+### 42. Design a booking system for 10k concurrent users
+
+*(A listing + booking platform — rooms/events/appointments. Practise this one out loud; it exercises every reliability primitive.)*
+
+#### Step 1 — Requirements
+
+**Functional (in scope):** search/browse listings with filters (city, date range, price) · view a listing with availability · **book** a listing for a date range · pay · cancel · view my bookings.
+**Out of scope (state it):** reviews, messaging, host onboarding, pricing engine, admin, analytics.
+
+**Non-functional:**
+- 10,000 concurrent users; browse-heavy.
+- Search p95 < 300 ms; booking confirm p95 < 1 s.
+- **No double-booking. Ever.** ← the one hard requirement; everything else is negotiable.
+- Availability 99.9%; browsing may serve slightly stale data, **inventory may not**.
+- Single region initially, multi-region later.
+
+#### Step 2 — Estimation (say the numbers)
+
+```text
+10,000 concurrent, ~10s think time      -> ~1,000 rps average; peak 3×  -> ~3,000 rps
+read:write ≈ 100:1                      -> ~2,970 reads/s, ~30 writes/s
+  => this is a READ problem with a small, brutally contended WRITE core
+
+Data: 1M listings × 2KB                  -> 2 GB metadata (fits in RAM — cache aggressively)
+      1M listings × 365 days availability -> 365M rows -> partition by month
+      10M bookings/yr × 1KB              -> 10 GB/yr
+      5M images × 500KB                  -> 2.5 TB -> object storage + CDN, never the app servers
+Bandwidth: 3,000 rps × 50KB JSON         -> ~150 MB/s dynamic + images offloaded to the CDN
+```
+
+**Conclusion to state:** "30 writes/s is trivial for one Postgres. The difficulty is not throughput — it's **contention on a few hot rows** at peak, and read fan-out. So I'll keep a single primary for correctness, and spend my effort on caching, search, and the booking transaction."
+
+#### Step 3 — API contract
+
+```http
+GET  /api/listings?city=cairo&from=2026-09-01&to=2026-09-05&guests=2&page=1
+     -> 200 { items:[{id,title,thumb,pricePerNight,rating}], nextCursor }   # cursor, not OFFSET
+
+GET  /api/listings/{id}                  -> 200 { ...details, photos[] }
+GET  /api/listings/{id}/availability?from=&to=  -> 200 { dates:[{date,remaining,price}] }  # advisory only
+
+POST /api/bookings                       # Idempotency-Key: <client-generated guid>   <-- say this
+     { listingId, from, to, guests }
+     -> 201 { bookingId, status:"PendingPayment", holdExpiresAt }
+     -> 409 { code:"NO_AVAILABILITY" }
+
+POST /api/bookings/{id}/payment          # Idempotency-Key
+     -> 202 { status:"Processing" }      # async confirm; poll or webhook/SignalR push
+
+GET  /api/bookings/{id}                  -> 200 { status: Pending|Confirmed|Failed|Cancelled }
+POST /api/bookings/{id}/cancel           -> 200
+```
+
+**Two decisions to justify:** cursor pagination (deep `OFFSET` degrades linearly and skips rows when data shifts) and **client-generated idempotency keys** on every mutation (a retried booking must not create two bookings — see [[18-Distributed-Systems-Reliability#Idempotency|Idempotency]]).
+
+#### Step 4 — Data model
+
+```sql
+listings(id PK, host_id, city, geo, title, description, price_per_night, capacity, status)
+  INDEX (city, status) INCLUDE (price_per_night)      -- the browse path
+
+availability(listing_id, date, total_units, booked_units, price)
+  PRIMARY KEY (listing_id, date)                      -- clustered: a date range = one range scan
+  PARTITION BY RANGE (date)                           -- drop old partitions instead of DELETE
+
+bookings(id PK, listing_id, user_id, from_date, to_date, status,
+         idempotency_key UNIQUE, hold_expires_at, total, row_version)
+  INDEX (user_id, created_at DESC)                    -- "my bookings"
+  INDEX (status, hold_expires_at) WHERE status='PendingPayment'   -- the expiry sweeper
+
+payments(id PK, booking_id, provider_ref UNIQUE, status, amount)
+outbox(id PK, type, payload, occurred_on, processed_on NULL)
+inbox(message_id PK, processed_on)                    -- consumer dedupe
+```
+
+#### Step 5 — Components
+
+```text
+                    ┌── CDN (images, static, cached listing pages) ──┐
+   Clients ─────────┤                                                 │
+                    └── Load Balancer (L7, TLS, health checks) ───────┘
+                                   │  round-robin, NO sticky sessions
+                    ┌──────────────┴───────────────┐
+                    │  Stateless API pods (.NET)   │  autoscale on rps/queue depth
+                    └──┬────────┬────────┬─────────┘
+                       │        │        │
+         Redis ────────┘        │        └──── Elasticsearch/OpenSearch
+   (cache, sessions,            │              (search & filters, fed by outbox;
+    rate limit, seat hold)      │               eventually consistent — that's fine)
+                                │
+                    ┌───────────┴────────────┐
+                    │ Postgres PRIMARY       │  ← ALL writes, and any read that decides money
+                    │  + 2 read replicas     │  ← browse/detail reads
+                    └───────────┬────────────┘
+                                │ outbox relay
+                          RabbitMQ ──► workers: payments, email, search indexing,
+                                                hold-expiry sweeper (Hangfire cron)
+                    Object storage (S3/Blob) ──► images, served via CDN
+```
+
+#### Step 6 — The bottleneck: preventing double-booking
+
+**Name it first:** "Every request path here is cacheable and boring except one — two users booking the last unit at the same instant. That's where I'll spend the time."
+
+**What does *not* work, and why (say these; rejecting wrong answers scores):**
+
+```csharp
+// ❌ Check-then-act: a textbook race. Both requests read remaining=1, both book.
+var a = await _db.Availability.FirstAsync(...);
+if (a.BookedUnits < a.TotalUnits) { a.BookedUnits++; await _db.SaveChangesAsync(); }
+
+// ❌ Redis distributed lock as the source of truth: not safe for correctness.
+// A GC pause or failover longer than the TTL means you "hold" a lock you've lost.
+// Fine as an optimisation, never as the guarantee. -> see the Redlock caveats.
+
+// ❌ Caching availability and trusting it: the cache is stale by definition.
+//    Cache it for DISPLAY, never for the DECISION.
+```
+
+**What does work — let the database be the arbiter:**
+
+```sql
+-- Atomic conditional update: the WHERE clause IS the check. One statement, no race,
+-- no explicit lock, no lost update. Rows-affected = 0 means "someone else got it" -> 409.
+UPDATE availability
+   SET booked_units = booked_units + 1
+ WHERE listing_id = @id
+   AND date BETWEEN @from AND @to
+   AND booked_units < total_units;
+-- rows affected must equal the number of nights, or ROLLBACK.
+```
+
+```csharp
+// The full write path — deliberately tiny, and it never leaves the database
+await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, ct);
+
+var nights = (to - from).Days;
+var claimed = await _db.Database.ExecuteSqlInterpolatedAsync($@"
+    UPDATE availability SET booked_units = booked_units + 1
+     WHERE listing_id = {id} AND date >= {from} AND date < {to}
+       AND booked_units < total_units", ct);
+
+if (claimed != nights) { await tx.RollbackAsync(ct); return Conflict("NO_AVAILABILITY"); }
+
+_db.Bookings.Add(new Booking { ..., Status = PendingPayment,
+                               HoldExpiresAt = now.AddMinutes(10),
+                               IdempotencyKey = key });        // UNIQUE index = retry-safe
+_db.Outbox.Add(new OutboxMessage(nameof(BookingHeld), payload)); // same transaction
+await _db.SaveChangesAsync(ct);
+await tx.CommitAsync(ct);        // total lock hold: single-digit milliseconds
+```
+
+**The three rules to state explicitly:**
+1. **The transaction contains no network call.** Payment happens *after* commit, driven by the outbox. Holding a DB transaction open across a 2-second payment gateway call is how you turn 30 writes/s into an outage — locks pile up, the connection pool drains, and the whole API stalls. See [[18-Distributed-Systems-Reliability#Connection pool exhaustion and PgBouncer|pool exhaustion]].
+2. **Hold-then-confirm.** The booking is created as `PendingPayment` with a 10-minute TTL; inventory is *reserved*, not sold. A Hangfire sweeper releases expired holds (`UPDATE ... booked_units - 1 WHERE status='PendingPayment' AND hold_expires_at < now()`), and it must be idempotent — releasing twice would oversell.
+3. **Payment is a saga.** `hold → authorise → capture → confirm`, with compensations: release hold, void authorisation, refund. Compensation is semantic, not a rollback. See [[18-Distributed-Systems-Reliability#Saga orchestration vs choreography|sagas]].
+
+**"What if one listing goes viral?"** (the follow-up you should invite): that's **hot-row contention** — every writer serialises on the same rows.
+- Measure first: even 100 rps on one row is survivable if the transaction is 3 ms.
+- **Queue that listing's writes** — a single-partition FIFO per listing turns contention into throughput and gives fair ordering; the client sees `202 Accepted` and polls or gets a SignalR push.
+- **Split the counter** into N sub-rows (`unit_bucket 0..9`) and claim from a random one, falling back to a scan of the rest. Removes the single hot row at the cost of a more complex claim.
+- **Shed load early**: a token/waiting-room in Redis so 50k people don't queue for 100 units.
+- **Never** solve it by caching availability — a cache cannot enforce an invariant.
+
+#### Step 6b — The read path (the other 99% of traffic)
+
+- **CDN** for images and, where allowed, whole listing pages with a short TTL. Cheapest possible win — offloads the majority of bytes before your app is involved.
+- **Redis cache-aside** for listing details: `listing:{id}` with a **60s TTL + jitter**, invalidated explicitly when the host edits. Single-flight the rebuild so a viral listing expiring doesn't stampede the DB.
+- **Search** in Elasticsearch, fed asynchronously from the outbox. **State the trade-off:** search results lag by seconds and may show a listing that was just booked out — acceptable, because availability is re-checked at booking time and the DB is the arbiter.
+- **Read replicas** for browse/detail. Writes and any read that affects a booking go to the **primary**. After a user books, pin them to the primary for ~30s so "My bookings" shows the new booking — [[18-Distributed-Systems-Reliability#Read replicas and replication lag|read-your-own-writes]].
+- **Don't cache the availability numbers used for the decision** — cache them for display with a 5s TTL and label them advisory in the API.
+
+#### Step 7 — Failure modes, trade-offs, and 10×
+
+**Failure modes (be ready for any of these):**
+
+| Failure | Behaviour |
+|---|---|
+| Redis down | Cache reads fail open → DB takes the full read load, so pods must have a small L1 cache + rate limiting; sessions/holds fail closed. Warm on recovery. |
+| Payment provider down | Circuit breaker → bookings stay `PendingPayment`; the hold TTL protects inventory automatically. Tell the user honestly. |
+| Payment succeeded, our confirm crashed | The outbox + `provider_ref UNIQUE` make the retry idempotent; a reconciliation job compares provider charges to bookings — **money always gets a reconciliation job**. |
+| Broker down | Business writes still commit (outbox retains); confirmations and emails are delayed, not lost. |
+| Pod dies mid-request | Stateless + idempotency key: the client retries and gets the *same* booking back, not a second one. |
+| Replica lag spikes | Drop it from rotation above threshold; critical reads already go to the primary. |
+
+**Trade-offs to state out loud:**
+- **One Postgres primary** rather than sharding: 30 writes/s doesn't justify it, and it buys me real transactions for the one invariant that matters. Cost: a single write ceiling and a failover window. I'd shard by `listing_id` (or by city/region) only when writes actually approach the limit.
+- **Eventual consistency in search**, strong consistency in inventory — deliberately split, because they have different costs of being wrong.
+- **Hold-then-confirm** costs inventory utilisation (units are reserved for people who never pay) and buys a payment flow that can't oversell.
+- **Async payment (202)** costs UI complexity and buys short transactions and resilience to a slow provider.
+
+**At 10× (100k concurrent):** more read replicas and heavier CDN/edge caching first · Redis cluster · **partition/shard writes by listing or region** · multi-region with the write primary in one region and reads local · queue-based load levelling for all writes · a waiting room for hot inventory. **Say what breaks first:** database connections and the hot-row transaction — not CPU.
+
+> [!tip] The closing line that lands
+> "If I had one more hour, I'd spend it on the payment saga's compensations and the reconciliation job — that's where correctness bugs actually cost money, and it's the part most designs hand-wave."

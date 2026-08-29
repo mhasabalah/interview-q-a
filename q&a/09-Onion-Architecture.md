@@ -8,7 +8,12 @@ order: 9
 # Onion Architecture Interview Q&A
 
 > [!info]+ Related Notes
-> [[08-Clean-Architecture|Clean Architecture]] · [[07-Domain-Driven-Design|Domain-Driven Design]] · [[11-Module-Communication|Module Communication]]
+> [[08-Clean-Architecture|Clean Architecture]] · [[07-Domain-Driven-Design|Domain-Driven Design]] · [[11-Module-Communication|Module Communication]] · [[17-Architecture-Defense|Architecture Defense]]
+
+> [!tip] Going deeper
+> This note shows **how** to build it. [[17-Architecture-Defense|Architecture Defense]] is how you **justify** it under pressure: vertical slice vs layers, MediatR's pipeline, repository-over-EF, and where you sit on the CQRS spectrum.
+>
+> Onion, Hexagonal and Clean are the **same principle at three resolutions** — protect the domain, invert the dependencies. See the side-by-side in [[20-Choosing-An-Architecture#Axis A — Internal structure|Choosing an Architecture]], and the deployment axis it says nothing about in [[19-Modular-Monolith|Modular Monolith]].
 
 ## Fundamentals
 

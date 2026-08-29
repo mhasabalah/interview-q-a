@@ -8,7 +8,12 @@ order: 8
 # Clean Architecture - Interview Q&A
 
 > [!info]+ Related Notes
-> [[09-Onion-Architecture|Onion Architecture]] · [[07-Domain-Driven-Design|Domain-Driven Design]] · [[02-SOLID-Principles|SOLID Principles]]
+> [[09-Onion-Architecture|Onion Architecture]] · [[07-Domain-Driven-Design|Domain-Driven Design]] · [[02-SOLID-Principles|SOLID Principles]] · [[17-Architecture-Defense|Architecture Defense]]
+
+> [!tip] Going deeper
+> **Vertical slice vs Clean/Onion**, whether MediatR earns its place, and whether to wrap EF Core in a repository are argued — with costs, not just definitions — in [[17-Architecture-Defense#Vertical Slice vs Clean/Onion|Architecture Defense]].
+>
+> Clean Architecture answers *how code inside one deployable is organised* — it says nothing about **how many deployables**. For that second axis, and for how the styles compare and migrate into one another, see [[20-Choosing-An-Architecture|Choosing an Architecture]] and [[19-Modular-Monolith|Modular Monolith]].
 
 ## Overview
 

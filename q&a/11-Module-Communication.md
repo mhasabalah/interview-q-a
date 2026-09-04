@@ -8,7 +8,7 @@ order: 11
 # Module Communication Interview Questions & Answers
 
 > [!info]+ Related Notes
-> [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[13-Real-Time-Communication|Real-Time Communication]] · [[09-Onion-Architecture|Onion Architecture]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]]
+> [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[13-Real-Time-Communication|Real-Time Communication]] · [[09-Onion-Architecture|Onion Architecture]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]] · [[22-Event-Sourcing-And-EDA|Event Sourcing & EDA]]
 
 > [!tip] Going deeper
 > For communication **between modules inside one deployable** — facades, in-process integration events shaped like broker messages, and why that makes extraction a transport swap — see [[19-Modular-Monolith#Communication between modules|Modular Monolith]].

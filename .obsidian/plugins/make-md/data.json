@@ -40,9 +40,9 @@
   "expandedSpaces": [
     "//projects/projects/property-management",
     "//Daily Task/Daily Task/Hr",
-    "//Tags",
     "//q&a",
-    "/"
+    "/",
+    "//Tags"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",

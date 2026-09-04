@@ -8,7 +8,7 @@ order: 17
 # Defending Your Own Architecture — Interview Q&A
 
 > [!info]+ Related Notes
-> [[07-Domain-Driven-Design|Domain-Driven Design]] · [[08-Clean-Architecture|Clean Architecture]] · [[09-Onion-Architecture|Onion Architecture]] · [[11-Module-Communication|Module Communication]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[03-Design-Patterns|Design Patterns]] · [[19-Modular-Monolith|Modular Monolith]] · [[20-Choosing-An-Architecture|Choosing an Architecture]]
+> [[07-Domain-Driven-Design|Domain-Driven Design]] · [[08-Clean-Architecture|Clean Architecture]] · [[09-Onion-Architecture|Onion Architecture]] · [[11-Module-Communication|Module Communication]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[03-Design-Patterns|Design Patterns]] · [[19-Modular-Monolith|Modular Monolith]] · [[20-Choosing-An-Architecture|Choosing an Architecture]] · [[22-Event-Sourcing-And-EDA|Event Sourcing & EDA]]
 
 > [!tip] The other half of this round
 > This note defends the choices *inside* one deployable. When they ask **"why this topology, and when would you split it?"** — the comparison of every style, the default a senior picks, and the migration paths are in [[20-Choosing-An-Architecture|Choosing an Architecture]].

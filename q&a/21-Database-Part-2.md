@@ -115,7 +115,7 @@ A: Not with a distributed lock, and not with a cache. Make the **database** the 
 
 ---
 
-## EF Core: optimistic and pessimistic in practice
+## EF Core optimistic and pessimistic in practice
 
 ```csharp
 // OPTIMISTIC — the default choice. A concurrency token; EF adds it to the WHERE clause.
@@ -187,7 +187,7 @@ await strategy.ExecuteAsync(async () =>
 
 ---
 
-## Long transactions: the systemic killer
+## Long transactions the systemic killer
 
 **Q: Why is "just wrap it in a transaction" dangerous?**
 
@@ -343,6 +343,83 @@ A: **Surrogate** by default — natural keys change (email, phone, tax ID, ISBNs
 | **Database per tenant** | strongest | **most expensive**, N migrations, N connections | no | trivial | enterprise/regulated, few large tenants |
 
 With the shared-schema model, the two non-negotiables: `tenant_id` **leading** in every composite index, and enforcement that isn't "developers remember" — an EF Core **global query filter**, or **row-level security** in the database. A hybrid (shared by default, dedicated DB for enterprise plans) is a very credible senior answer.
+
+---
+
+## MongoDB as a read store
+
+**Q: You write to PostgreSQL and read from MongoDB. Defend that.** *(A CV bullet, so expect the full interrogation.)*
+
+A: It's [[17-Architecture-Defense#CQRS — where on the spectrum, and why you stopped there|CQRS level 3]] — separate read store, kept current by integration events. The write side keeps a normalised relational model with real constraints and transactions; the read side stores **one document per screen**, pre-joined, so a page render is a single `findOne` by ID with zero joins and zero aggregation.
+
+**The honest version, which is what actually scores:**
+
+> *"The justification has to be **query shape**, not speed. A booking search page needs flight + passenger + seat + status in one payload; relationally that's four joins on every request, and in a document store it's one read of a document I shaped for exactly that screen. What I bought is read simplicity and independent read scaling. What I paid is **eventual consistency**, duplicated data, and a projection I have to keep correct and rebuildable. A materialised view or a denormalised table in Postgres would also have worked and would have been one less database to run — I'd want a real reason before adding Mongo to a system that already has Postgres."*
+
+Volunteering that last sentence is the difference between "I used Mongo" and "I chose Mongo".
+
+### Document modelling for a read model
+
+| | **Embed** | **Reference** |
+|---|---|---|
+| Read cost | one read, no join | extra round trip or `$lookup` |
+| Good for | data always read together, bounded in size | large, shared, or independently changing data |
+| Danger | the **16 MB document limit** and **unbounded arrays** | you re-invented joins in a database that isn't built for them |
+
+**The rule for a read model specifically: embed almost everything.** A read model exists to serve one query shape — if you're referencing and joining, you've rebuilt the relational model without the relational engine. And **never** model an unbounded growing array (comments, events, audit entries) inside a document: it grows past 16 MB, and every update rewrites the whole document.
+
+### Indexes and the ESR rule
+
+```javascript
+// Compound index field order for MongoDB: Equality, Sort, Range — in that order.
+db.bookings.createIndex({ tenantId: 1, status: 1, createdAt: -1 })
+//                        ^equality   ^equality  ^sort/range
+
+db.bookings.find({ tenantId: t, status: "Confirmed" }).sort({ createdAt: -1 }).limit(20)
+db.bookings.find({ ... }).explain("executionStats")
+//   look for IXSCAN not COLLSCAN, and totalDocsExamined ≈ nReturned
+```
+
+**ESR** is the Mongo equivalent of the composite-index ordering rule earlier in this note, and naming it lands well. Also worth knowing: a **covered query** (all fields served from the index, no document fetch), and that Mongo will only use **one index per query stage** — so compound indexes matter far more than many single-field ones.
+
+### Aggregation pipeline
+
+`$match` **as early as possible** (so it can use an index), then `$project` to cut the payload, then `$group`/`$sort`. `$lookup` exists but is not a real join — it's a per-document sub-query, and it is the thing that will make your read store slow. **In a read model you should almost never need `$lookup`, because you already denormalised.** If you do need it constantly, your projection is wrong.
+
+### Durability and consistency knobs
+
+- **Write concern** `w: majority` — acknowledged by a majority of the replica set, i.e. survives a failover. `w: 1` is faster and loses writes on failover. For a **rebuildable projection**, `w: 1` is a defensible trade; for anything authoritative it is not.
+- **Read concern** `majority` avoids reading data that could be rolled back; `local` is faster and can read a write that later disappears.
+- **Read preference** — reading from secondaries scales reads but adds its own replication lag *on top of* your projection lag. Know that you're stacking two staleness windows.
+- **Transactions** exist (replica sets since 4.0, sharded since 4.2) — but in a read model, needing a multi-document transaction is a signal your documents are drawn on the wrong boundary. Model so each event updates **one document**.
+
+### The projection mechanics that actually get probed
+
+```csharp
+// The event arrives at-least-once and possibly OUT OF ORDER. Both must be handled in one write.
+var filter = Builders<BookingReadModel>.Filter.And(
+    Builders<BookingReadModel>.Filter.Eq(x => x.Id, e.BookingId),
+    Builders<BookingReadModel>.Filter.Lt(x => x.Version, e.Version));   // <-- the ordering guard
+
+var update = Builders<BookingReadModel>.Update
+    .Set(x => x.Status,  "Confirmed")
+    .Set(x => x.Version, e.Version)
+    .SetOnInsert(x => x.CreatedAt, e.OccurredOn);
+
+await _col.UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true }, ct);
+// Idempotent: a redelivery has Version == stored, so Lt fails and nothing changes.
+// Out-of-order: an older event has Version < stored, so it is ignored instead of overwriting newer state.
+```
+
+Four things to say about it:
+1. **Idempotent upsert, never insert** — redelivery is guaranteed, not hypothetical.
+2. **A version/position guard on the document** is what makes out-of-order delivery harmless — cheaper and more portable than demanding ordering from the broker.
+3. **Checkpoint after the write**, so a crash replays the last event into an idempotent handler.
+4. **Rebuild by building into a new collection and renaming** — the read model stays live and serving throughout, then the swap is atomic. Never truncate the collection users are querying.
+
+### When this is the wrong call
+
+You already run PostgreSQL and a materialised view or denormalised table would serve the query · you need transactional consistency between the read and write model · the team has no Mongo operational experience · the "read model" is really just the write model with different column names. **Two databases is a real operational cost — it needs a query-shape reason, not a preference.**
 
 ---
 

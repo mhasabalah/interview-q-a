@@ -8,7 +8,7 @@ order: 16
 # System Design Interview Q&A
 
 > [!info]+ Related Notes
-> [[06-Database|Database]] · [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[15-Azure-Cloud|Azure Cloud]] · [[14-CI-CD|CI/CD]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]]
+> [[06-Database|Database]] · [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[15-Azure-Cloud|Azure Cloud]] · [[14-CI-CD|CI/CD]] · [[18-Distributed-Systems-Reliability|Distributed Systems & Reliability]] · [[17-Architecture-Defense|Architecture Defense]] · [[23-Observability|Observability]]
 
 > [!tip]+ Doing the design round
 > Jump to **[[#41. The design round — the framework that scores you|§41 the framework]]** and the worked example **[[#42. Design a booking system for 10k concurrent users|§42 booking system for 10k concurrent users]]**. Practise §42 **out loud, on a whiteboard, in 40 minutes** — the framework is worth more marks than the content.

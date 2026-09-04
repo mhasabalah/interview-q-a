@@ -8,7 +8,7 @@ order: 18
 # Distributed Systems & Reliability - Interview Q&A
 
 > [!info]+ Related Notes
-> [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[16-System-Design|System Design]] · [[17-Architecture-Defense|Architecture Defense]] · [[06-Database|Database]] · [[04-CSharp-Fundamentals|C# Fundamentals]]
+> [[11-Module-Communication|Module Communication]] · [[12-RabbitMQ-MassTransit|RabbitMQ & MassTransit]] · [[16-System-Design|System Design]] · [[17-Architecture-Defense|Architecture Defense]] · [[06-Database|Database]] · [[04-CSharp-Fundamentals|C# Fundamentals]] · [[22-Event-Sourcing-And-EDA|Event Sourcing & EDA]] · [[23-Observability|Observability]]
 
 > [!danger]+ How this round is scored
 > Every question in this round is really **one** question: *"what happens when this part fails?"* Junior answers describe the happy path. Senior answers name the **failure mode**, the **guarantee** it breaks, and the **cost** of the fix.
